@@ -15,7 +15,8 @@
 
             <div class="mb-5 ">
                 <input @change="storeImage" ref="file" type="file" class="hidden">
-                <a class="bg-green-400 px-4 py-2 rounded-md mr-3 text-white " href="#" @click.prevent="selectFile()">Загрузить изображение</a>
+                <a class="bg-green-400 px-4 py-2 rounded-md mr-3 text-white " href="#" @click.prevent="selectFile()">Загрузить
+                    изображение</a>
                 <a class="bg-red-400 px-4 py-2 rounded-md text-white" v-if="image" href="#"
                    @click.prevent="cancelImage()">Отменить</a>
             </div>
@@ -26,6 +27,19 @@
             <div class="mb-5">
                 <a class="bg-green-800 px-4 py-2 rounded-md mr-3 text-white" href="" @click.prevent="publishPost">Опубликовать</a>
             </div>
+
+
+            <section class="posts" v-if="posts">
+                <article class="post" v-for="post in posts">
+                    <div class="title">{{post.title}}</div>
+
+                    <img v-if="post.image_url" :src="post.image_url" :alt="post.title">
+                    <div class="content">{{post.content}}</div>
+                    <div class="date">{{post.date}}</div>
+                </article>
+            </section>
+
+
             <div class="mt-100">
                 <button class="cursor-pointer mr-5" @click="getUser">Показать пользователя</button>
                 <button class="cursor-pointer" @click="logout">Выйти</button>
@@ -44,6 +58,7 @@ const title = ref('')
 const content = ref('')
 const file = ref('')
 const image = ref('')
+const posts = ref([]);
 
 const user = reactive({
     name: '',
@@ -59,7 +74,7 @@ const storeImage = (event) => {
         const formData = new FormData()
         formData.append('image', selectedFile)
 
-        axios.post('/api/post_image', formData)
+        axios.post('/api/post_images', formData)
             .then(res => {
                 image.value = res.data.data;
                 console.log(image.value)
@@ -71,7 +86,18 @@ const cancelImage = () => {
     image.value = '';
 }
 const publishPost = async () => {
-    await axios.post('/api/posts')
+    const id = image.value ? image.value.id : null
+    await axios.post('/api/posts', {title: title.value, content: content.value, image_id: id})
+        .then(res => {
+
+
+            title.value = '';
+            content.value = '';
+            image.value = null;
+            console.log(res);
+
+            posts.value.unshift(res.data.data)
+        })
 }
 const logout = async () => {
     try {
@@ -93,9 +119,18 @@ const getUser = async () => {
     }
 }
 
+const getPosts = () => {
+    axios.get('/api/posts')
+        .then(res => {
+            console.log(res);
+            posts.value = res.data.data;
+            }
+        )
+}
+
 
 getUser(); // Получаем пользователя при монтировании компонента
-
+getPosts(); // Получаем все посты пользователя при монтировании компонента
 
 </script>
 
@@ -104,5 +139,28 @@ getUser(); // Получаем пользователя при монтиров�
 
 .hidden {
     visibility: hidden;
+}
+
+.title {
+    font-weight: 500;
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+img {
+    margin-bottom: 15px;
+    border-radius: 10px;
+}
+
+.post {
+    margin-bottom: 20px;
+    padding: 12px 0;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.date {
+    text-align: right;
+    color: #939393;
+    font-size: 14px;
 }
 </style>

@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (\Illuminate\Http\Reque
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/posts', [PostController::class, 'store']);
-    Route::post('/post_image', [\App\Http\Controllers\PostImageController::class, 'store']);
+    Route::get('/posts', [PostController::class, 'index']);
+    Route::post('/post_images', [\App\Http\Controllers\PostImageController::class, 'store']);
 });
 

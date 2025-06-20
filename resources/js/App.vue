@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="flex p-5 gap-4">
+        <div class="flex p-5 gap-4 ">
             <router-link to="/register">Регистрация</router-link>
             <router-link to="/login">Войти</router-link>
             <router-link v-if="isAuthenticated" to="/dashboard">Личный кабинет</router-link>

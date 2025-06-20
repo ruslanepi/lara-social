@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container">
         <h1>Register</h1>
         <form @submit.prevent="register">
             <input v-model="name" type="text" placeholder="Name" required>
@@ -44,3 +44,36 @@ export default {
     }
 };
 </script>
+
+
+<style>
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    input {
+        border: 1px solid #ccc;
+        width: 300px;
+        padding: 6px 12px;
+
+    }
+
+    button {
+        width: 300px;
+        background: #ccc;
+        cursor: pointer;
+        padding: 6px 12px;
+
+        &:hover {
+            background-color: #616161;
+            color:#fff;
+        }
+    }
+}
+
+.container {
+    padding: 20px;
+}
+</style>

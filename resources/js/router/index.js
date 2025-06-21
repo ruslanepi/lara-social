@@ -1,12 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Login from '../components/Login.vue';
-import Register from '../components/Register.vue';
-import Dashboard from '../components/Dashboard.vue';
+import Login from '../views/Login.vue';
+import Register from '../views/Register.vue';
+import Dashboard from '../views/Dashboard.vue';
+import Index from "../views/Index.vue";
+import Show from "../views/Show.vue";
 
 const routes = [
     { path: '/login', name: 'Login', component: Login },
     { path: '/register', name: 'Register', component: Register },
-    { path: '/dashboard', name: 'Dashboard', component: Dashboard, meta: { requiresAuth: true } }
+    { path: '/dashboard', name: 'Dashboard', component: Dashboard, meta: { requiresAuth: true } },
+    { path: '/index', name: 'Index', component: Index, meta: { requiresAuth: true } },
+    { path: '/user/:id', name: 'ShowUser', component: Show, meta: { requiresAuth: true } },
 ];
 
 const router = createRouter({

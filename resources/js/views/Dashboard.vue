@@ -30,26 +30,22 @@
 
 
             <section class="posts" v-if="posts">
-                <article class="post" v-for="post in posts">
-                    <div class="title">{{post.title}}</div>
-
-                    <img v-if="post.image_url" :src="post.image_url" :alt="post.title">
-                    <div class="content">{{post.content}}</div>
-                    <div class="date">{{post.date}}</div>
-                </article>
+                <Post v-for="post in posts" :post="post"></Post>
             </section>
 
 
             <div class="mt-100">
                 <button class="cursor-pointer mr-5" @click="getUser">Показать пользователя</button>
-                <button class="cursor-pointer" @click="logout">Выйти</button>
+
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
+import Post from "@/components/Post.vue";
 import axios from 'axios';
+
 import {reactive, ref} from "vue";
 import {useRouter} from "vue-router";
 
@@ -99,15 +95,7 @@ const publishPost = async () => {
             posts.value.unshift(res.data.data)
         })
 }
-const logout = async () => {
-    try {
-        await axios.post('/api/auth/logout');
-        localStorage.removeItem('authenticated');
-        await router.push('/login');
-    } catch (error) {
-        console.error(error.response?.data ?? error.message);
-    }
-}
+
 
 const getUser = async () => {
     try {

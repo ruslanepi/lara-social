@@ -1,9 +1,12 @@
 <template>
     <div>
         <div class="flex p-5 gap-4 ">
-            <router-link to="/register">Регистрация</router-link>
-            <router-link to="/login">Войти</router-link>
+            <router-link v-if="!isAuthenticated" to="/register">Регистрация</router-link>
+            <router-link v-if="!isAuthenticated" to="/login">Войти</router-link>
+            <router-link v-if="isAuthenticated" to="/index">Пользователи</router-link>
             <router-link v-if="isAuthenticated" to="/dashboard">Личный кабинет</router-link>
+            <a v-if="isAuthenticated" class="cursor-pointer" @click="logout">Выйти</a>
+
         </div>
         <router-view/>
     </div>
@@ -13,6 +16,7 @@
 
 import {ref} from "vue";
 import axios from "axios";
+import router from "@/router/index.js";
 
 const isAuthenticated = ref(false);
 
@@ -32,6 +36,19 @@ async function checkAuth() {
         isAuthenticated.value = false;
     }
 
+}
+
+
+
+const logout = async () => {
+    try {
+        await axios.post('/api/auth/logout');
+        localStorage.removeItem('authenticated');
+        await router.push('/login');
+        isAuthenticated.value = false;
+    } catch (error) {
+        console.error(error.response?.data ?? error.message);
+    }
 }
 
 checkAuth()

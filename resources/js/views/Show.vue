@@ -1,11 +1,11 @@
 <template>
     <div class="flex flex-col p-5">
-        <h1 class="text-lg">Страница пользователя</h1>
+        <router-link :to="{name: 'Index'}" class="btn">Назад</router-link>
+
+        <h1 class="text-lg mt-5">Страница пользователя</h1>
 
 
         <div class="w-2xl">
-
-
 
             <section class="posts" v-if="posts">
                 <Post v-for="post in posts" :post="post"></Post>

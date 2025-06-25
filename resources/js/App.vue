@@ -31,7 +31,7 @@ async function checkAuth() {
         await axios.get('/sanctum/csrf-cookie');
         const response = await axios.get('/api/user', {withCredentials: true});
         isAuthenticated.value = response.status === 200;
-
+        
     } catch (error) {
         isAuthenticated.value = false;
     }

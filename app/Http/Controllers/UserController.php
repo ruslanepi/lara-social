@@ -50,6 +50,8 @@ class UserController extends Controller
     }
 
 
+
+
     public function followingPost()
     {
         $followedIds = auth()->user()->followings()->get()->pluck('id')->toArray();

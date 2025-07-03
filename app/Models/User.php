@@ -56,4 +56,11 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(User::class, 'subscriber_followings', 'subscriber_id', 'following_id');
     }
+
+    public function likedPosts(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Post::class, 'liked_posts', 'user_id', 'post_id');
+    }
 }
+
+

@@ -20,4 +20,6 @@ class Post extends Model
     public function getDateAttribute() {
         return $this->created_at->diffForHumans();
     }
+
+
 }

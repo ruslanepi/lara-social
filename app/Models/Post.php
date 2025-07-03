@@ -10,7 +10,7 @@ class Post extends Model
     use HasFactory;
     protected $guarded = false;
 
-    protected $with = ['image'];
+    protected $with = ['image', 'likedUsers'];
 
     public function image() {
         return $this->hasOne(PostImage::class, 'post_id', 'id')
@@ -21,5 +21,12 @@ class Post extends Model
         return $this->created_at->diffForHumans();
     }
 
+
+
+
+    public function likedUsers(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'liked_posts', 'post_id', 'user_id');
+    }
 
 }

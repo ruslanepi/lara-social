@@ -18,9 +18,12 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::whereNot('id',  auth()->id())->get();
+        $users = User::whereNot('id',  auth()->id())
+            ->withCount('posts')
+            ->get();
 
         $followingIds = SubscriberFollowing::where('subscriber_id', auth()->id())
+
             ->pluck('following_id')
             ->toArray();
 
@@ -44,6 +47,16 @@ class UserController extends Controller
        $data['is_followed'] = count($res['attached']) > 0;
 
        return $data;
+    }
+
+
+    public function followingPost()
+    {
+        $followedIds = auth()->user()->followings()->get()->pluck('id')->toArray();
+        $posts = Post::whereIn('user_id', $followedIds)->get();
+
+        return PostResource::collection($posts);
+
     }
 
 }

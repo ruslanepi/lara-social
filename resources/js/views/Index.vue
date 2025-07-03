@@ -7,6 +7,7 @@
                     <p>{{ user.id }}</p>
                     <p>{{ user.email }}</p>
                     <p>{{ user.name }}</p>
+                    <p>Постов: {{ user.posts_count }}</p>
                     <router-link :to="{name: 'ShowUser', params:{id:user.id}}" class="btn">Подробнее</router-link>
                 </div>
                 <div v-if="!user.is_followed">
@@ -67,6 +68,7 @@ article {
     border-bottom: 1px solid #ccc;
 
     display: flex;
+
     justify-content: space-between;
     align-items: flex-end;
 }

@@ -4,6 +4,7 @@
             <router-link v-if="!isAuthenticated" to="/register">Регистрация</router-link>
             <router-link v-if="!isAuthenticated" to="/login">Войти</router-link>
             <router-link v-if="isAuthenticated" to="/index">Пользователи</router-link>
+            <router-link v-if="isAuthenticated" :to="{name: 'Feed'}">Лента</router-link>
             <router-link v-if="isAuthenticated" to="/dashboard">Личный кабинет</router-link>
             <a v-if="isAuthenticated" class="cursor-pointer" @click="logout">Выйти</a>
 
@@ -16,7 +17,8 @@
 
 import {ref} from "vue";
 import axios from "axios";
-import router from "@/router/index.js";
+
+
 
 const isAuthenticated = ref(false);
 
@@ -31,7 +33,7 @@ async function checkAuth() {
         await axios.get('/sanctum/csrf-cookie');
         const response = await axios.get('/api/user', {withCredentials: true});
         isAuthenticated.value = response.status === 200;
-        
+
     } catch (error) {
         isAuthenticated.value = false;
     }

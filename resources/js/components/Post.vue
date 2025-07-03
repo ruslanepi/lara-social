@@ -13,5 +13,8 @@ const props = defineProps(['post']);
 </script>
 
 <style scoped>
-
+.post {
+    display: flex;
+    flex-direction: column;
+}
 </style>

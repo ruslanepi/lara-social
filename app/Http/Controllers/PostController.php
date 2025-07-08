@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Post\RepostRequest;
 use App\Http\Requests\Post\StoreRequest;
 use App\Http\Resources\Post\PostResource;
 use App\Models\LikedPost;
@@ -26,7 +27,7 @@ class PostController extends Controller
             ->toArray();
 
         foreach ($posts as $post) {
-            if(in_array($post->id, $likedPostIds)) {
+            if (in_array($post->id, $likedPostIds)) {
                 $post->is_liked = true;
             }
         }
@@ -60,6 +61,15 @@ class PostController extends Controller
 
     }
 
+    public function repost(RepostRequest $request, Post $post)
+    {
+        $data = $request->validated();
+
+        $data['user_id'] = auth()->id();
+        $data['reposted_id'] = $post->id;
+        Post::create($data);
+    }
+
     private function processImage($post, $imageId)
     {
         if (isset($imageId)) {
@@ -79,4 +89,6 @@ class PostController extends Controller
 
         return $data;
     }
+
+
 }
